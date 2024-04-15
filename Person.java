@@ -19,6 +19,7 @@ public class Person extends Actor
         moveAround();
         hitEnemy();
         hitFood();
+        hitBomb();
     }
     public boolean hitHome(){
        if(isTouching(Home.class)){
@@ -42,6 +43,14 @@ public class Person extends Actor
            getWorld().removeObject(apple);
            MyWorld.score--;
         }
+       
+    }
+    public void hitBomb(){
+        Actor bomb = getOneIntersectingObject(Bomb.class);
+       if(isTouching(Bomb.class)){
+           Greenfoot.stop();
+           getWorld().removeObject(bomb);
+       }
        
     }
     public void hitFood(){
@@ -70,6 +79,7 @@ public class Person extends Actor
             if(hitWall() == true || hitEdge() == true){
                 setLocation(getX(), getY()+2);
             }
+            
             if(hitHome() == true){
                 World level2 = new FishWorld();
                 Greenfoot.setWorld(level2);
@@ -77,17 +87,23 @@ public class Person extends Actor
         }
         if(Greenfoot.isKeyDown("down")){
             setLocation(getX(), getY()+1);
-            
+            if(hitWall() == true || hitEdge() == true){
+                setLocation(getX(), getY()-2);
+            }
             
         }
         if(Greenfoot.isKeyDown("right")){
             setLocation(getX()+1, getY());
-            
+            if(hitWall() == true || hitEdge() == true){
+                setLocation(getX()-2, getY());
+            }
             
         }
         if(Greenfoot.isKeyDown("left")){
             setLocation(getX()-1, getY());
-            
+            if(hitWall() == true || hitEdge() == true){
+                setLocation(getX()+2, getY());
+            }
         }
     }
 }
